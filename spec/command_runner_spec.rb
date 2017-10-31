@@ -9,7 +9,7 @@ describe CommandRunner do
     it 'returns an error message' do
       command_runner.run(%w(arg_one arg_two arg_three))
 
-      expect(logger).to have_received(:error).with("Error: Too many arguments!\nRun ruby app.rb --help for usage information.")
+      expect(logger).to have_received(:error).with("Error: Too many arguments!\n\nRun 'ruby app.rb --help' for usage information.\n")
     end
   end
 
@@ -17,7 +17,7 @@ describe CommandRunner do
     it 'returns an error message' do
       command_runner.run([])
 
-      expect(logger).to have_received(:error).with("Error: Not enough arguments!\nRun ruby app.rb --help for usage information.")
+      expect(logger).to have_received(:error).with("Error: Not enough arguments!\n\nRun 'ruby app.rb --help' for usage information.\n")
     end
   end
 
@@ -25,7 +25,15 @@ describe CommandRunner do
     it 'returns an error message' do
       command_runner.run(['arg_one'])
 
-      expect(logger).to have_received(:error).with("Error: Not enough arguments!\nRun ruby app.rb --help for usage information.")
+      expect(logger).to have_received(:error).with("Error: Not enough arguments!\n\nRun 'ruby app.rb --help' for usage information.\n")
+    end
+  end
+
+  describe 'given the --help argument' do
+    it 'returns usage information' do
+      command_runner.run(['--help'])
+
+      expect(logger).to have_received(:info).with("\n\nUsage:    ruby app.rb [CRON] [COMMAND]\n\nExample:  ruby app.rb \"0 0 * * *\" ./run_this.sh\n")
     end
   end
 
@@ -45,7 +53,7 @@ hour          0
 day of month  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
 month         1 2 3 4 5 6 7 8 9 10 11 12
 day of week   1 2 3 4 5 6 7
-command       /usr/bin/find\n\n"
+command       /usr/bin/find\n"
       end
 
       it 'outputs a correctly formatted breakdown of when and what will be scheduled to run' do
