@@ -4,8 +4,14 @@ class CronParser
   end
 
   def minute
-    minutes = parsed_cron[0]
-    minutes.tr(',', ' ')
+    input = parsed_cron[0]
+    if input =~ /\*/
+      minute_x = input[/(\d+)/].to_i
+      minutes_in_hour = (0..59).select { |min| min.to_i.modulo(minute_x.to_i).zero? }
+      return minutes_in_hour.join(' ')
+    end
+
+    input.tr(',', ' ')
   end
 
   private

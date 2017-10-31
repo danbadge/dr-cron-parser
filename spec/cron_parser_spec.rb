@@ -28,5 +28,13 @@ describe CronParser do
         expect(cron_parser.minute).to eq('15 32 48')
       end
     end
+
+    context 'when input is */15' do
+      let(:cron) { '*/15 * * * *' }
+
+      it 'returns every minute in the hour it will run' do
+        expect(cron_parser.minute).to eq('0 15 30 45')
+      end
+    end
   end
 end
