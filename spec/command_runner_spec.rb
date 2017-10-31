@@ -2,9 +2,40 @@ require 'spec_helper'
 require 'command_runner'
 
 describe CommandRunner do
+  let(:logger) { double(:logger, :error => {}, :info => {}) }
+  let(:command_runner) { described_class.new(:logger => logger) }
+
+  describe 'given a too many arguments' do
+    it 'returns an error message' do
+      command_runner.run(%w(arg_one arg_two arg_three))
+
+      expect(logger).to have_received(:error).with("Error: Too many arguments!\nRun ruby app.rb --help for usage information.")
+    end
+  end
+
+  describe 'given no arguments' do
+    it 'returns an error message' do
+      command_runner.run([])
+
+      expect(logger).to have_received(:error).with("Error: Not enough arguments!\nRun ruby app.rb --help for usage information.")
+    end
+  end
+
+  describe 'given only one argument' do
+    it 'returns an error message' do
+      command_runner.run(['arg_one'])
+
+      expect(logger).to have_received(:error).with("Error: Not enough arguments!\nRun ruby app.rb --help for usage information.")
+    end
+  end
+
   describe 'given a valid cron' do
     let(:cron_schedule) { '0 0 * * *' }
     let(:cron_command) { '/usr/bin/find' }
+
+    before do
+      command_runner.run([cron_schedule, cron_command])
+    end
 
     context 'which should run every day at midnight' do
       let(:cron_schedule) { '0 0 * * *' }
@@ -18,7 +49,7 @@ command       /usr/bin/find\n\n"
       end
 
       it 'outputs a correctly formatted breakdown of when and what will be scheduled to run' do
-        expect { CommandRunner.run([cron_schedule, cron_command]) }.to output(expected_message).to_stdout
+        expect(logger).to have_received(:info).with(expected_message)
       end
     end
 
@@ -27,7 +58,7 @@ command       /usr/bin/find\n\n"
       let(:expected_command) { 'command       ./my-script.sh' }
 
       it 'outputs a breakdown of when the cron will be scheduled to run' do
-        expect { CommandRunner.run([cron_schedule, cron_command]) }.to output(/#{expected_command}/).to_stdout
+        expect(logger).to have_received(:info).with(/#{expected_command}/)
       end
     end
   end
