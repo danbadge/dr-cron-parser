@@ -1,1 +1,3 @@
-puts 'this is the entrypoint'
+require_relative 'lib/command_runner'
+
+CommandRunner.run(ARGV)
