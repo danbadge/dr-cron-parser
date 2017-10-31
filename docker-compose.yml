@@ -1,0 +1,15 @@
+version: '2'
+services:
+  dr-cron-parser:
+    build: .
+    command: sleep infinity
+    environment:
+      - BUNDLE_PATH=.bundle
+    volumes:
+      - dr-cron-parser-sync:/usr/src/app:rw
+    networks:
+      - default
+
+volumes:
+  dr-cron-parser-sync:
+    external: true

@@ -1,0 +1,5 @@
+.bundle
+.docker-sync
+.git
+.git-crypt
+tmp

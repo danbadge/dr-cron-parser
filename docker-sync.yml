@@ -1,0 +1,10 @@
+version: "2"
+options:
+  compose-dev-file-path: 'docker-compose.yml'
+  verbose: true
+syncs:
+  dr-cron-parser-sync:
+    # sync local project folder with app folder within container
+    src: '.'
+    sync_excludes: [ 'tmp', '.git', '.git-crypt', 'log', '.bundle' ]
+    sync_args: [ '-prefer newer' ]
