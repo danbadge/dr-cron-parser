@@ -1,4 +1,5 @@
 require 'logger'
+require_relative 'cron_parser'
 
 class CommandRunner
   def initialize(logger: Logger.new(STDOUT))
@@ -8,6 +9,8 @@ class CommandRunner
   def run(args)
     return if help_requested?(args)
     return unless valid?(args)
+
+    parser = CronParser.new(args[0])
 
     logger.info("\nminute        0
 hour          0
