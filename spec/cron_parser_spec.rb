@@ -5,6 +5,38 @@ describe CronParser do
   let(:cron_parser) { described_class.new(cron) }
 
   describe 'given user wants a minute breakdown' do
+    context 'when input is string' do
+      let(:cron) { 'what-is-this * * * *' }
+
+      it 'throws an exception' do
+        expect { cron_parser.minute }.to raise_error(StandardError, 'Minute is in an invalid format')
+      end
+    end
+
+    context 'when input contains a string' do
+      let(:cron) { '10,wat * * * *' }
+
+      it 'throws an exception' do
+        expect { cron_parser.minute }.to raise_error(StandardError, 'Minute is in an invalid format')
+      end
+    end
+
+    context 'when input is too large' do
+      let(:cron) { '555 * * * *' }
+
+      it 'throws an exception' do
+        expect { cron_parser.minute }.to raise_error(StandardError, 'Minute is in an invalid format')
+      end
+    end
+
+    context 'when input is negative' do
+      let(:cron) { '-1 * * * *' }
+
+      it 'throws an exception' do
+        expect { cron_parser.minute }.to raise_error(StandardError, 'Minute is in an invalid format')
+      end
+    end
+
     context 'when input is 0' do
       let(:cron) { '0 * * * *' }
 
