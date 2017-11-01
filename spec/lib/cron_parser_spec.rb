@@ -7,7 +7,7 @@ describe CronParser do
 
   describe 'given a cron' do
     context 'which is valid' do
-      let(:cron) { '* */22 0 5 1,2' }
+      let(:cron) { '1-5 */22 0 * 1,2' }
 
       it 'returns a cron summary' do
         expect(parse_cron).to be_an_instance_of(CronSummary)

@@ -15,6 +15,11 @@ class Field
       return
     elsif value == '*'
       return
+    elsif value =~ /(\d+)-(\d+)/
+      value.split('-').each do |v|
+        raise InvalidFormatError, "#{field_name} is in an invalid format" unless valid_single_value?(v)
+      end
+      return
     end
 
     value.split(',').each do |v|
@@ -29,6 +34,9 @@ class Field
       return values.join(' ')
     elsif value == '*'
       return (lower_bound..upper_bound).to_a.join(' ')
+    elsif value =~ /(\d+)-(\d+)/
+      values = value.split('-').map(&:to_i)
+      return (values.first..values.last).to_a.join(' ')
     end
 
     value.split(',').map(&:to_i).join(' ')
