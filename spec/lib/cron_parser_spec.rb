@@ -21,5 +21,13 @@ describe CronParser do
         expect { parse_cron }.to raise_error(InvalidFormatError, 'Minute is in an invalid format')
       end
     end
+
+    context 'which has missing fields' do
+      let(:cron) { '* * * *' }
+
+      it 'throws an exception' do
+        expect { parse_cron }.to raise_error(InvalidFormatError, 'Cron is invalid')
+      end
+    end
   end
 end
