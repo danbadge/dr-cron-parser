@@ -4,7 +4,7 @@ require 'cron_summary'
 describe CronSummary do
   let(:minute) { double(:minute, :summarise => 'minute summary') }
   let(:hour) { double(:hour, :summarise => 'hour summary') }
-  let(:day) { double(:day, :summarise => 'day summary') }
+  let(:day_of_month) { double(:day_of_month, :summarise => 'day of month summary') }
   let(:month) { double(:month, :summarise => 'month summary') }
   let(:day_of_week) { double(:day_of_week, :summarise => 'day of the week summary') }
 
@@ -12,7 +12,7 @@ describe CronSummary do
     CronSummary.new(
       :minute => minute,
       :hour => hour,
-      :day => day,
+      :day_of_month => day_of_month,
       :month => month,
       :day_of_week => day_of_week
     )
@@ -32,7 +32,7 @@ describe CronSummary do
 
   context 'when retrieving a day summary' do
     it 'returns the correct result' do
-      expect(cron_summary.day).to eq('day summary')
+      expect(cron_summary.day_of_month).to eq('day of month summary')
     end
   end
 

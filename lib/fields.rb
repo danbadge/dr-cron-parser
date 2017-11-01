@@ -28,13 +28,13 @@ class Hour
   end
 end
 
-class Day
+class DayOfMonth
   def self.parse!(value)
     field = Field.new(
       :value => value,
       :lower_bound => 1,
       :upper_bound => 31,
-      :field_name => 'Day'
+      :field_name => 'Day of the month'
     )
 
     field.parse!

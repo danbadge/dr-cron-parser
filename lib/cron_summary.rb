@@ -1,8 +1,8 @@
 class CronSummary
-  def initialize(minute:, hour:, day:, month:, day_of_week:)
+  def initialize(minute:, hour:, day_of_month:, month:, day_of_week:)
     @minute_field = minute
     @hour_field = hour
-    @day_field = day
+    @day_of_month_field = day_of_month
     @month_field = month
     @day_of_week_field = day_of_week
   end
@@ -15,8 +15,8 @@ class CronSummary
     hour_field.summarise
   end
 
-  def day
-    day_field.summarise
+  def day_of_month
+    day_of_month_field.summarise
   end
 
   def month
@@ -29,5 +29,5 @@ class CronSummary
 
   private
 
-  attr_reader :minute_field, :hour_field, :day_field, :month_field, :day_of_week_field
+  attr_reader :minute_field, :hour_field, :day_of_month_field, :month_field, :day_of_week_field
 end

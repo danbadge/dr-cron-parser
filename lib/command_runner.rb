@@ -16,7 +16,7 @@ class CommandRunner
 
     logger.info("\nminute        #{cron_summary.minute}
 hour          #{cron_summary.hour}
-day of month  #{cron_summary.day}
+day of month  #{cron_summary.day_of_month}
 month         #{cron_summary.month}
 day of week   #{cron_summary.day_of_week}
 command       #{args[1]}\n")

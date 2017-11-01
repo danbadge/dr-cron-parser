@@ -10,14 +10,14 @@ class CronParser
 
     minute = Minute.parse!(parsed_cron[0])
     hour = Hour.parse!(parsed_cron[1])
-    day = Day.parse!(parsed_cron[2])
+    day_of_month = DayOfMonth.parse!(parsed_cron[2])
     month = Month.parse!(parsed_cron[3])
     day_of_week = DayOfWeek.parse!(parsed_cron[4])
 
     CronSummary.new(
       :minute => minute,
       :hour => hour,
-      :day => day,
+      :day_of_month => day_of_month,
       :month => month,
       :day_of_week => day_of_week
     )
