@@ -5,8 +5,8 @@ class CronParser
 
   def parse(cron)
     @parsed_cron = cron.split(' ')
-    validate_minute!
-    validate_hour!
+    Minute.new.validate!(parsed_cron[0])
+    Hour.new.validate!(parsed_cron[1])
 
     CronSummary.new(parsed_cron)
   end
@@ -14,50 +14,64 @@ class CronParser
   private
 
   attr_reader :parsed_cron
+end
 
-  def validate_hour!
-    minute_input = parsed_cron[1]
+class Hour
+  def validate!(value)
+    validator = FieldValidator.new(
+      :value => value,
+      :lower_bound => 0,
+      :upper_bound => 23,
+      :field_name => 'Hour'
+    )
 
-    if minute_input =~ /\*\/(\d+)/
-      minute_x = minute_input[/(\d+)/]
-      puts minute_x
-      raise InvalidFormatError, 'Hour is in an invalid format' unless valid_hour?(minute_x)
+    validator.validate!
+  end
+end
+
+class Minute
+  def validate!(value)
+    validator = FieldValidator.new(
+      :value => value,
+      :lower_bound => 0,
+      :upper_bound => 59,
+      :field_name => 'Minute'
+    )
+
+    validator.validate!
+  end
+end
+
+class FieldValidator
+  def initialize(value:, lower_bound:, upper_bound:, field_name:)
+    @value = value
+    @lower_bound = lower_bound
+    @upper_bound = upper_bound
+    @field_name = field_name
+  end
+
+  def validate!
+    if value =~ /\*\/(\d+)/
+      value_every_x = value[/(\d+)/]
+      raise CronParser::InvalidFormatError, "#{field_name} is in an invalid format" unless valid_single_value?(value_every_x)
       return
-    elsif minute_input =~ /\*/
+    elsif value == '*'
       return
     end
 
-    minute_input.split(',').each do |min|
-      raise InvalidFormatError, 'Hour is in an invalid format' unless valid_hour?(min)
+    value.split(',').each do |v|
+      raise CronParser::InvalidFormatError, "#{field_name} is in an invalid format" unless valid_single_value?(v)
     end
   end
 
-  def valid_hour?(input)
-    number = Integer(input)
-    number <= 23 && number >= 0
+  private
+
+  def valid_single_value?(value)
+    number = Integer(value)
+    number <= upper_bound && number >= lower_bound
   rescue => _error
     false
   end
 
-  def validate_minute!
-    minute_input = parsed_cron[0]
-
-    if minute_input =~ /\*\/(\d+)/
-      minute_x = minute_input[/(\d+)/]
-      raise InvalidFormatError, 'Minute is in an invalid format' unless valid_minute?(minute_x)
-    elsif minute_input =~ /\*/
-      return
-    end
-
-    minute_input.split(',').each do |min|
-      raise InvalidFormatError, 'Minute is in an invalid format' unless valid_minute?(min)
-    end
-  end
-
-  def valid_minute?(input)
-    number = Integer(input)
-    number <= 59 && number >= 0
-  rescue => _error
-    false
-  end
+  attr_reader :value, :lower_bound, :upper_bound, :field_name
 end
