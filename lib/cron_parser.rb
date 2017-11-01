@@ -6,11 +6,12 @@ class CronParser
     parsed_cron = cron.split(' ')
     minute = Minute.parse!(parsed_cron[0])
     hour = Hour.parse!(parsed_cron[1])
+    day = Day.parse!(parsed_cron[2])
 
     CronSummary.new(
       :minute => minute,
       :hour => hour,
-      :day => nil,
+      :day => day,
       :month => nil,
       :year => nil
     )
@@ -38,6 +39,20 @@ class Hour
       :lower_bound => 0,
       :upper_bound => 23,
       :field_name => 'Hour'
+    )
+
+    field.parse!
+    field
+  end
+end
+
+class Day
+  def self.parse!(value)
+    field = Field.new(
+      :value => value,
+      :lower_bound => 1,
+      :upper_bound => 31,
+      :field_name => 'Day'
     )
 
     field.parse!
