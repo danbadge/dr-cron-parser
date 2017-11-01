@@ -25,10 +25,10 @@ class Field
   def summarise
     if value =~ /\*\/(\d+)/
       value_every_x = value[/(\d+)/]
-      values = (0..59).select { |v| v.to_i.modulo(value_every_x.to_i).zero? }
+      values = (lower_bound..upper_bound).select { |v| v.to_i.modulo(value_every_x.to_i).zero? }
       return values.join(' ')
     elsif value == '*'
-      return (0..59).to_a.join(' ')
+      return (lower_bound..upper_bound).to_a.join(' ')
     end
 
     value.split(',').map(&:to_i).join(' ')
