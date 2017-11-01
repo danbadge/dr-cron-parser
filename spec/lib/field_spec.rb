@@ -1,5 +1,6 @@
 require 'spec_helper'
-require 'cron_summary'
+require 'field'
+require 'errors'
 
 describe Field do
   let(:field) do
@@ -48,6 +49,48 @@ describe Field do
 
     it 'returns every minute in the hour' do
       expect(field.summarise).to eq('0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21')
+    end
+  end
+
+  context 'when value is invalid' do
+    context 'because it contains a string' do
+      let(:value) { '10,wat' }
+
+      it 'throws an exception' do
+        expect { field.parse! }.to raise_error(InvalidFormatError, 'field is in an invalid format')
+      end
+    end
+
+    context 'because it is greater than 59' do
+      let(:value) { '22' }
+
+      it 'throws an exception' do
+        expect { field.parse! }.to raise_error(InvalidFormatError, 'field is in an invalid format')
+      end
+    end
+
+    context 'because it less than 0' do
+      let(:value) { '-1' }
+
+      it 'throws an exception' do
+        expect { field.parse! }.to raise_error(InvalidFormatError, 'field is in an invalid format')
+      end
+    end
+
+    context 'because a number in the collection is out of bounds' do
+      let(:value) { '12,-1' }
+
+      it 'throws an exception' do
+        expect { field.parse! }.to raise_error(InvalidFormatError, 'field is in an invalid format')
+      end
+    end
+
+    context 'because running a command every 22 mins is out of bounds' do
+      let(:value) { '*/22' }
+
+      it 'throws an exception' do
+        expect { field.parse! }.to raise_error(InvalidFormatError, 'field is in an invalid format')
+      end
     end
   end
 end
