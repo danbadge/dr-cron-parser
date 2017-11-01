@@ -28,9 +28,9 @@ Run all the tests by doing:
 
 Notes / Improvements
 -----
-Overall I'm fairly happy with the outcome but there's always room for some improvements.
+Overall I'm fairly happy with the outcome but there's always room for improvement.
 
 * Firstly, `Field` holds all the complexity. This seems like necessary complexity but I'm not happy that it's buried under a few layers and that it's called "field". The name and the layers doesn't make it obvious enough for me that there's more going here.
 * `CronParser` and `CronSummary` don't do too much and add some misdirection. They just delegate and provides a slightly nicer interface.
 * This isn't very thought through but I think I've got two similar patterns for the array of rules and the classes in `fields.rb`. I'm sure these could conform somehow so there's at least some consistency.
-* On a similar note, I'd like to get rid of `fields.rb` all together there's no need to use a class object and singleton method. 
+* On a similar note, I'd like to get rid of `fields.rb` all together there's no need to use a class object and singleton method. Again, nice interface but not very idiomatic.
