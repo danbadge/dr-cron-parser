@@ -1,6 +1,6 @@
 class CronSummary
-  def initialize(cron)
-    @cron = cron
+  def initialize(parsed_cron)
+    @parsed_cron = parsed_cron
   end
 
   def minute
@@ -23,9 +23,5 @@ class CronSummary
 
   private
 
-  attr_reader :cron
-
-  def parsed_cron
-    cron.split(' ')
-  end
+  attr_reader :parsed_cron
 end
