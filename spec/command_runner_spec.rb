@@ -42,7 +42,7 @@ describe CommandRunner do
     let(:command_runner) { described_class.new(:logger => logger, :cron_parser => cron_parser) }
 
     before do
-      allow(cron_parser).to receive(:parse).and_raise(StandardError, 'Something wrong')
+      allow(cron_parser).to receive(:parse).and_raise(CronParser::InvalidFormatError, 'Something wrong')
     end
 
     it 'returns a friendlier error message' do

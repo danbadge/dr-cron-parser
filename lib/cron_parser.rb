@@ -1,6 +1,8 @@
 require_relative 'cron_summary'
 
 class CronParser
+  class InvalidFormatError < StandardError; end
+
   def parse(cron)
     @cron = cron
     validate_minute!
@@ -13,11 +15,11 @@ class CronParser
 
     if input =~ /\*\/(\d+)/
       minute_x = input[/(\d+)/]
-      raise StandardError, 'Minute is in an invalid format' unless valid_minute?(minute_x)
+      raise InvalidFormatError, 'Minute is in an invalid format' unless valid_minute?(minute_x)
     end
 
     input.split(',').each do |min|
-      raise StandardError, 'Minute is in an invalid format' unless valid_minute?(min)
+      raise InvalidFormatError, 'Minute is in an invalid format' unless valid_minute?(min)
     end
   end
 
