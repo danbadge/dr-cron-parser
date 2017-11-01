@@ -18,7 +18,7 @@ class CommandRunner
 hour          #{cron_summary.hour}
 day of month  #{cron_summary.day}
 month         #{cron_summary.month}
-day of week   1 2 3 4 5 6 7
+day of week   #{cron_summary.day_of_week}
 command       #{args[1]}\n")
 
   rescue InvalidFormatError => error
@@ -31,7 +31,7 @@ command       #{args[1]}\n")
 
   def help_requested?(args)
     if args.first == '--help'
-      logger.info("\n\nUsage:    ruby app.rb [CRON] [COMMAND]\n\nExample:  ruby app.rb \"0 0 * * *\" ./run_this.sh\n")
+      logger.info("\n\nUsage:    ruby app.rb [CRON] [COMMAND]\n\nExample:  ruby app.rb \"0 0 * * *\" ./example.sh\n")
       return true
     end
 

@@ -6,7 +6,7 @@ describe CronSummary do
   let(:hour) { double(:hour, :summarise => 'hour summary') }
   let(:day) { double(:day, :summarise => 'day summary') }
   let(:month) { double(:month, :summarise => 'month summary') }
-  let(:year) { double(:year, :summarise => 'year summary') }
+  let(:day_of_week) { double(:day_of_week, :summarise => 'day of the week summary') }
 
   let(:cron_summary) do
     CronSummary.new(
@@ -14,7 +14,7 @@ describe CronSummary do
       :hour => hour,
       :day => day,
       :month => month,
-      :year => year
+      :day_of_week => day_of_week
     )
   end
 
@@ -42,9 +42,9 @@ describe CronSummary do
     end
   end
 
-  context 'when retrieving a year summary' do
+  context 'when retrieving a day of the week summary' do
     it 'returns the correct result' do
-      expect(cron_summary.year).to eq('year summary')
+      expect(cron_summary.day_of_week).to eq('day of the week summary')
     end
   end
 end
