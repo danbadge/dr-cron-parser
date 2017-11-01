@@ -6,6 +6,7 @@ class CronParser
   def parse(cron)
     @parsed_cron = cron.split(' ')
     validate_minute!
+    validate_hour!
 
     CronSummary.new(parsed_cron)
   end
@@ -13,6 +14,30 @@ class CronParser
   private
 
   attr_reader :parsed_cron
+
+  def validate_hour!
+    minute_input = parsed_cron[1]
+
+    if minute_input =~ /\*\/(\d+)/
+      minute_x = minute_input[/(\d+)/]
+      puts minute_x
+      raise InvalidFormatError, 'Hour is in an invalid format' unless valid_hour?(minute_x)
+      return
+    elsif minute_input =~ /\*/
+      return
+    end
+
+    minute_input.split(',').each do |min|
+      raise InvalidFormatError, 'Hour is in an invalid format' unless valid_hour?(min)
+    end
+  end
+
+  def valid_hour?(input)
+    number = Integer(input)
+    number <= 23 && number >= 0
+  rescue => _error
+    false
+  end
 
   def validate_minute!
     minute_input = parsed_cron[0]
