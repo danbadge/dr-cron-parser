@@ -7,12 +7,13 @@ class CronParser
     minute = Minute.parse!(parsed_cron[0])
     hour = Hour.parse!(parsed_cron[1])
     day = Day.parse!(parsed_cron[2])
+    month = Month.parse!(parsed_cron[3])
 
     CronSummary.new(
       :minute => minute,
       :hour => hour,
       :day => day,
-      :month => nil,
+      :month => month,
       :year => nil
     )
   end
@@ -53,6 +54,20 @@ class Day
       :lower_bound => 1,
       :upper_bound => 31,
       :field_name => 'Day'
+    )
+
+    field.parse!
+    field
+  end
+end
+
+class Month
+  def self.parse!(value)
+    field = Field.new(
+      :value => value,
+      :lower_bound => 1,
+      :upper_bound => 12,
+      :field_name => 'Month'
     )
 
     field.parse!

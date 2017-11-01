@@ -62,12 +62,12 @@ describe CommandRunner do
     end
 
     context 'which should run every day at midnight' do
-      let(:cron_schedule) { '0 0 * * *' }
+      let(:cron_schedule) { '10,12 0 * 4 1-6' }
       let(:expected_message) do
-        "\nminute        0
+        "\nminute        10 12
 hour          0
 day of month  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
-month         1 2 3 4 5 6 7 8 9 10 11 12
+month         4
 day of week   1 2 3 4 5 6 7
 command       /usr/bin/find\n"
       end
