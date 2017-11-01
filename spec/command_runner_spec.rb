@@ -37,6 +37,21 @@ describe CommandRunner do
     end
   end
 
+  describe 'given the cron parser throws an exception' do
+    let(:cron_parser) { double(:cron_parser) }
+    let(:command_runner) { described_class.new(:logger => logger, :cron_parser => cron_parser) }
+
+    before do
+      allow(cron_parser).to receive(:parse).and_raise(StandardError, 'Something wrong')
+    end
+
+    it 'returns a friendlier error message' do
+      command_runner.run(['invalid cron', 'arg_two'])
+
+      expect(logger).to have_received(:error).with("Error: Something wrong\n\nRun 'ruby app.rb --help' for usage information.\n")
+    end
+  end
+
   describe 'given a valid cron' do
     let(:cron_schedule) { '0 0 * * *' }
     let(:cron_command) { '/usr/bin/find' }
