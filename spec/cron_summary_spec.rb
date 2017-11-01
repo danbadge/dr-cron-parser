@@ -2,65 +2,49 @@ require 'spec_helper'
 require 'cron_summary'
 
 describe CronSummary do
-  let(:minute) { '' }
-  let(:cron) { [minute, '*', '*', '*', '*'] }
-  let(:cron_summary) { CronSummary.new(cron) }
+  let(:minute) { double(:minute, :summarise => 'minute summary') }
+  let(:hour) { double(:hour, :summarise => 'hour summary') }
+  let(:day) { double(:day, :summarise => 'day summary') }
+  let(:month) { double(:month, :summarise => 'month summary') }
+  let(:year) { double(:year, :summarise => 'year summary') }
 
-  describe 'given the user wants a minute breakdown' do
-    context 'when input is 0' do
-      let(:minute) { '0' }
+  let(:cron_summary) do
+    CronSummary.new(
+      :minute => minute,
+      :hour => hour,
+      :day => day,
+      :month => month,
+      :year => year
+    )
+  end
 
-      it 'returns 0' do
-        expect(cron_summary.minute).to eq('0')
-      end
+  context 'when retrieving a minute summary' do
+    it 'returns the correct result' do
+      expect(cron_summary.minute).to eq('minute summary')
     end
+  end
 
-    context 'when input is 15' do
-      let(:minute) { '15' }
-
-      it 'returns 15' do
-        expect(cron_summary.minute).to eq('15')
-      end
+  context 'when retrieving a hour summary' do
+    it 'returns the correct result' do
+      expect(cron_summary.hour).to eq('hour summary')
     end
+  end
 
-    context 'when input is 15, 32 and 48' do
-      let(:minute) { '15,32,48' }
-
-      it 'returns 15 32 48' do
-        expect(cron_summary.minute).to eq('15 32 48')
-      end
+  context 'when retrieving a day summary' do
+    it 'returns the correct result' do
+      expect(cron_summary.day).to eq('day summary')
     end
+  end
 
-    context 'when input is */15' do
-      let(:minute) { '*/15' }
-
-      it 'returns every minute in the hour it will run' do
-        expect(cron_summary.minute).to eq('0 15 30 45')
-      end
+  context 'when retrieving a month summary' do
+    it 'returns the correct result' do
+      expect(cron_summary.month).to eq('month summary')
     end
+  end
 
-    context 'when input is */7' do
-      let(:minute) { '*/3' }
-
-      it 'returns every minute in the hour it will run' do
-        expect(cron_summary.minute).to eq('0 3 6 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57')
-      end
-    end
-
-    context 'when input is */7' do
-      let(:minute) { '*/38' }
-
-      it 'returns every minute in the hour it will run' do
-        expect(cron_summary.minute).to eq('0 38')
-      end
-    end
-
-    context 'when input is *' do
-      let(:minute) { '*' }
-
-      it 'returns every minute in the hour' do
-        expect(cron_summary.minute).to eq('0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59')
-      end
+  context 'when retrieving a year summary' do
+    it 'returns the correct result' do
+      expect(cron_summary.year).to eq('year summary')
     end
   end
 end

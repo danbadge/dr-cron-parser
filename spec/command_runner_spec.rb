@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'command_runner'
+require 'errors'
 
 describe CommandRunner do
   let(:logger) { double(:logger, :error => {}, :info => {}) }
@@ -42,7 +43,7 @@ describe CommandRunner do
     let(:command_runner) { described_class.new(:logger => logger, :cron_parser => cron_parser) }
 
     before do
-      allow(cron_parser).to receive(:parse).and_raise(CronParser::InvalidFormatError, 'Something wrong')
+      allow(cron_parser).to receive(:parse).and_raise(InvalidFormatError, 'Something wrong')
     end
 
     it 'returns a friendlier error message' do

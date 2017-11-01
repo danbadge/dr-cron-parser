@@ -1,5 +1,6 @@
 require 'cron_parser'
 require 'cron_summary'
+require 'errors'
 
 describe CronParser do
   let(:parse_cron) { described_class.new.parse(cron) }
@@ -18,7 +19,7 @@ describe CronParser do
         let(:cron) { 'what-is-this * * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Minute is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Minute is in an invalid format')
         end
       end
 
@@ -26,7 +27,7 @@ describe CronParser do
         let(:cron) { '10,wat * * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Minute is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Minute is in an invalid format')
         end
       end
 
@@ -34,7 +35,7 @@ describe CronParser do
         let(:cron) { '60 * * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Minute is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Minute is in an invalid format')
         end
       end
 
@@ -42,7 +43,7 @@ describe CronParser do
         let(:cron) { '-1 * * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Minute is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Minute is in an invalid format')
         end
       end
 
@@ -50,7 +51,7 @@ describe CronParser do
         let(:cron) { '12,-1 * * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Minute is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Minute is in an invalid format')
         end
       end
 
@@ -58,7 +59,7 @@ describe CronParser do
         let(:cron) { '*/61 * * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Minute is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Minute is in an invalid format')
         end
       end
     end
@@ -68,7 +69,7 @@ describe CronParser do
         let(:cron) { '* what * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Hour is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Hour is in an invalid format')
         end
       end
 
@@ -76,7 +77,7 @@ describe CronParser do
         let(:cron) { '* 10,wat * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Hour is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Hour is in an invalid format')
         end
       end
 
@@ -84,7 +85,7 @@ describe CronParser do
         let(:cron) { '* 24 * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Hour is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Hour is in an invalid format')
         end
       end
 
@@ -92,7 +93,7 @@ describe CronParser do
         let(:cron) { '* -1 * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Hour is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Hour is in an invalid format')
         end
       end
 
@@ -100,7 +101,7 @@ describe CronParser do
         let(:cron) { '* 12,-1 * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Hour is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Hour is in an invalid format')
         end
       end
 
@@ -108,7 +109,7 @@ describe CronParser do
         let(:cron) { '* */25 * * *' }
 
         it 'throws an exception' do
-          expect { parse_cron }.to raise_error(CronParser::InvalidFormatError, 'Hour is in an invalid format')
+          expect { parse_cron }.to raise_error(InvalidFormatError, 'Hour is in an invalid format')
         end
       end
     end

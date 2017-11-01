@@ -1,27 +1,33 @@
 class CronSummary
-  def initialize(parsed_cron)
-    @parsed_cron = parsed_cron
+  def initialize(minute:, hour:, day:, month:, year:)
+    @minute_field = minute
+    @hour_field = hour
+    @day_field = day
+    @month_field = month
+    @year_field = year
   end
 
   def minute
-    input = parsed_cron[0]
+    minute_field.summarise
+  end
 
-    if input =~ /\*\/(\d+)/
-      minute_x = input[/(\d+)/]
-      minutes_in_hour = (0..59).select { |min| min.to_i.modulo(minute_x.to_i).zero? }
-      return minutes_in_hour.join(' ')
-    elsif input =~ /\*/
-      return (0..59).to_a.join(' ')
-    end
+  def hour
+    hour_field.summarise
+  end
 
-    minutes = input.split(',').map do |min|
-      min.to_i
-    end
+  def day
+    day_field.summarise
+  end
 
-    minutes.join(' ')
+  def month
+    month_field.summarise
+  end
+
+  def year
+    year_field.summarise
   end
 
   private
 
-  attr_reader :parsed_cron
+  attr_reader :minute_field, :hour_field, :day_field, :month_field, :year_field
 end

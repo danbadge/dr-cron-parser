@@ -1,5 +1,6 @@
 require 'logger'
 require_relative 'cron_parser'
+require_relative 'errors'
 
 class CommandRunner
   def initialize(logger: Logger.new(STDOUT), cron_parser: CronParser.new)
@@ -14,13 +15,13 @@ class CommandRunner
     cron_summary = cron_parser.parse(args[0])
 
     logger.info("\nminute        #{cron_summary.minute}
-hour          0
+hour          #{cron_summary.hour}
 day of month  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
 month         1 2 3 4 5 6 7 8 9 10 11 12
 day of week   1 2 3 4 5 6 7
 command       #{args[1]}\n")
 
-  rescue StandardError => error
+  rescue InvalidFormatError => error
     logger.error(output_error_message(error.message))
   end
 
